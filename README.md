@@ -1,5 +1,6 @@
 <div align=center>
-<img src="./logo.png" width="25%" />
+<!--  <img src="./logo.png" width="25%" />  -->
+<img src="https://www.whing.cn/about/tmps/logo.png" width="20%" />
 </div>
 
 **English | [简体中文](README_cn.md)**
@@ -74,5 +75,6 @@ Coming soon......
 Could you treat me a cup of tea？
 
 <div align=left>
-<img src="./reward-wx.png" width="35%" />
+<!--  <img src="./reward-wx.png" width="35%" />  -->
+<img src="https://www.whing.cn/about/tmps/reward-wx.png" width="30%" />
 </div>
