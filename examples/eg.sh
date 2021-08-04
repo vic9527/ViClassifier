@@ -1,0 +1,2 @@
+# data_directory, batch_size=64, arch='resnet18', save_path='./model.pth', eval_rate=1, epochs=10, learning_rate=0.001, device_type='cuda'
+python eg.py C:\Users\xxx\cls\full 64 resnet18 model.pth 1 100 0.001 0

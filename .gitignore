@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom ignore files
+./__pycache__
+./utils/__pycache__
+./models/__pycache__
+
