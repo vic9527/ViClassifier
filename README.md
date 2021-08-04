@@ -23,6 +23,8 @@ Please install the following required modules.
 > pip install [torch](https://pytorch.org/get-started/locally/)
 >
 > pip install opencv-python
+>
+> pip install tqdm
 
 The following modules are optional and can be selectively installed during deployment.
 

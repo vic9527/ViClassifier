@@ -8,7 +8,7 @@ archs = ['alexnet',
          'squeezenet1_0', 'squeezenet1_1',
          'shufflenet_v2_x0_5', 'shufflenet_v2_x1_0', 'shufflenet_v2_x1_5', 'shufflenet_v2_x2_0']
          
-arch = 'resnet18'
+arch = 'shufflenet_v2_x0_5'
 
 data_directory = r'C:\xxx\cls\full'  # path of your dataset
 

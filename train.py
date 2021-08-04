@@ -1,3 +1,13 @@
+"""
+python实现计算精度、召回率和F1值_夏栀的博客-CSDN博客_f1值
+https://blog.csdn.net/qq_36426650/article/details/88073089
+
+在pytorch中计算准确率,召回率和F1值的操作--龙方网络
+https://www.yzlfxy.com/jiaocheng/python/396950.html
+
+"""
+
+
 def load_model(model_path, device_type='cuda'):
     import torch
     from viclassifier.utils import dev_opt
@@ -35,6 +45,15 @@ def eval(model, validation_dataloaders, device):
     cost = criterion()
     validation_loss = 0
     validation_accuracy = 0
+
+    correct = 0
+    total = 0
+    classnum = len(validation_dataloaders.dataset.class_to_idx)
+    print('classnum: ', classnum)
+    target_num = torch.zeros((1, classnum))
+    predict_num = torch.zeros((1, classnum))
+    acc_num = torch.zeros((1, classnum))
+
     with torch.no_grad():
         for valid_inputs, valid_labels in tqdm(validation_dataloaders, ascii=True, desc="Validation:"):
             valid_inputs, valid_labels = valid_inputs.to(device), valid_labels.to(device)
@@ -56,6 +75,30 @@ def eval(model, validation_dataloaders, device):
             # print(numpy.mean(equals.cpu().numpy() + 0))
             # print(numpy.mean(equals.cpu().numpy().astype(int)))
             validation_accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
+
+            _, predicted = torch.max(valid_output.data, 1)
+            total += valid_labels.size(0)
+            correct += predicted.eq(valid_labels.data).cpu().sum()
+            pre_mask = torch.zeros(valid_output.size()).scatter_(1, predicted.cpu().view(-1, 1), 1.)
+            predict_num += pre_mask.sum(0)
+            tar_mask = torch.zeros(valid_output.size()).scatter_(1, valid_labels.data.cpu().view(-1, 1), 1.)
+            target_num += tar_mask.sum(0)
+            acc_mask = pre_mask * tar_mask
+            acc_num += acc_mask.sum(0)
+        recall = acc_num / target_num
+        precision = acc_num / predict_num
+        F1 = 2 * recall * precision / (recall + precision)
+        accuracy = acc_num.sum(1) / target_num.sum(1)
+        # 精度调整
+        recall = (recall.numpy()[0] * 100).round(3)
+        precision = (precision.numpy()[0] * 100).round(3)
+        F1 = (F1.numpy()[0] * 100).round(3)
+        accuracy = (accuracy.numpy()[0] * 100).round(3)
+        # 打印格式方便复制
+        print('Recall: ', " ".join('%s' % id for id in recall))
+        print('Precision: ', " ".join('%s' % id for id in precision))
+        print('F1: ', " ".join('%s' % id for id in F1))
+        print('Accuracy: ', accuracy)
 
     return validation_loss / len(validation_dataloaders), validation_accuracy / len(validation_dataloaders)
 
