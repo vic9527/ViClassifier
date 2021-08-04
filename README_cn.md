@@ -1,7 +1,8 @@
 <div align=center>
 <!--  <img src="./logo.png" width="25%" />  -->
-<img src="https://www.whing.cn/about/tmps/logo.png" width="20%" />
+<img src="https://www.whing.cn/about/tmps/logo2.png" width="100%" />
 </div>
+
 
 **简体中文 | [English](README.md)**
 
