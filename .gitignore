@@ -129,9 +129,9 @@ dmypy.json
 .pyre/
 
 # Custom ignore files
-./__pycache__
-./utils/__pycache__
-./models/__pycache__
-.examples/model.pth
-.examples/model-best.pth
+__pycache__
+utils/__pycache__
+models/__pycache__
+examples/model.pth
+examples/model-best.pth
 
