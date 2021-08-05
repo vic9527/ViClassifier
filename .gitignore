@@ -132,5 +132,5 @@ dmypy.json
 __pycache__
 utils/__pycache__
 models/__pycache__
-examples/
+examples/model*
 
