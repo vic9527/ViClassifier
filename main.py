@@ -106,7 +106,7 @@ class VicModel(object):
         from viclassifier import test
         test.run(self.model, test_dataloaders, device_type)
 
-    def infer_image(self, image_path, idx_to_class, is_show=False, device_type=None):
+    def infer_image(self, image_path, idx_to_class=None, is_show=False, device_type=None):
         if device_type is not None:
             device_type = device_type
         else:
@@ -180,13 +180,17 @@ if __name__ == '__main__':
         # if test_loader is not None:
         #     model.test_data(test_loader)
 
-        # image_path = r'C:\Users\MLT\Desktop\精悦蓉\cls\full\good\20210719_180953_1.jpg'
+        # image_path = r'xxx.jpg'
 
         image_dir = r'C:\Users\xxx\cls\full'
         from tqdm import tqdm
+        
+        flist = []
         for root, dirs, files in os.walk(image_dir):
             # print(root, dirs, files)
-            flist = [os.path.join(root, f) for f in files if f.endswith('.jpg')]
+            # flist = [os.path.join(root, f) for f in files if f.endswith('.jpg')]  # bug
+            flist.extend([os.path.join(root, f) for f in files if f.endswith('.jpg')])
+            
         for image_path in tqdm(flist):
             print('\n' + image_path)
             print(model.infer_image(image_path, idx_to_class))

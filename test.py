@@ -29,7 +29,7 @@ def run(model, test_dataloaders, device_type='cuda'):
 
             top_p, top_class = ps.topk(1, dim=1)
             equals = top_class == test_labels.view(*top_class.shape)
-            equals_float = equals.type(torch.FloatTensor)
+            equals_float = equals.type(torch.FloatTensor).to(device)
             equals_all = torch.cat((equals_all, equals_float), 0)  # 在 0 维(纵向)进行拼接，在 1 维(横向)进行拼接。
 
             # iter_accuracy = torch.mean(equals.type(torch.FloatTensor)).item()

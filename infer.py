@@ -10,7 +10,7 @@ def load_model(model_path, device_type='cuda'):
     return model
 
 
-def predict(model, image_path, idx_to_class, is_show=False, device_type='cuda'):
+def predict(model, image_path, idx_to_class=None, is_show=False, device_type='cuda'):
     import torch
     from PIL import Image, ImageDraw, ImageFont
     from viclassifier.utils import dev_opt
@@ -37,13 +37,19 @@ def predict(model, image_path, idx_to_class, is_show=False, device_type='cuda'):
 
 
     if is_show:
-        text = idx_to_class[topclass.cpu().numpy()[0][0]] + " " + str(topk.cpu().numpy()[0][0])
+        text = str(topclass.cpu().numpy()[0][0]) + " " + str(topk.cpu().numpy()[0][0])
+        if idx_to_class is not None:
+            text = idx_to_class[topclass.cpu().numpy()[0][0]] + " " + str(topk.cpu().numpy()[0][0])      
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype('arial.ttf', 36)
         draw.text((0, 0), text, (255, 0, 0), font=font)
         image.show()
+        
+    label = topclass.cpu().numpy()[0][0]
+    if idx_to_class is not None:
+        label = idx_to_class[label]
 
-    return idx_to_class[topclass.cpu().numpy()[0][0]], topk.cpu().numpy()[0][0]
+    return label, topk.cpu().numpy()[0][0]
 
 
 if __name__ == "__main__":

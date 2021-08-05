@@ -20,23 +20,13 @@ ViClassifier (Vision Classifier), a simple and easy-to-use classification toolbo
 
 Please install the following required modules.
 
-> pip install [torch](https://pytorch.org/get-started/locally/)
+> pip install [torch](https://pytorch.org/get-started/locally/) opencv-python tqdm
 >
-> pip install opencv-python
->
-> pip install tqdm
 
 The following modules are optional and can be selectively installed during deployment.
 
-> pip install flask
+> pip install flask fastapi tornado requests httpx
 > 
-> pip install fastapi
-> 
-> pip install tornado
-> 
-> pip install requests
-> 
-> pip install httpx
 
 
 
@@ -57,11 +47,15 @@ git clone https://github.com/vic9527/viclassifier.git
 ```
 import viclassifier as vic
 
-image_path = r'test.jpg' 
-idx_to_class = {0: "bad", 1: "good"}
+# idx_to_class = {0: "bad", 1: "good"}
 
-model = vic.main.VicModel('model.pth')
-result = model.infer_image(image_path, idx_to_class)
+model_path = r'model.pth'
+image_path = r'test.jpg' 
+
+model = vic.main.VicModel(model_path)
+result = model.infer_image(image_path)
+
+# print(idx_to_class[result[0]], result[1])
 print(result)
 ```
 
