@@ -31,8 +31,8 @@ idx_to_class = {k: v for v, k in class_to_idx.items()}
 print('idx_to_class: ', idx_to_class)
 
 if class_to_idx is not None:
-    model = vic.main.VicModel(arch, len(class_to_idx))
+    model = vic.main.VicModel(arch, len(class_to_idx), device_type=device_type)
     if train_loader is not None:
-        model.train_data(train_loader, test_loader, save_path, eval_rate, epochs, learning_rate, device_type)
+        model.train_data(train_loader, test_loader, save_path, eval_rate, epochs, learning_rate)
     if test_loader is not None:
         model.test_data(test_loader)

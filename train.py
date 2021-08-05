@@ -45,14 +45,16 @@ def eval(model, validation_dataloaders, device):
     cost = criterion()
     validation_loss = 0
     validation_accuracy = 0
-
+    
+    # Evaluation index calculation-1-start
     correct = 0
     total = 0
     classnum = len(validation_dataloaders.dataset.class_to_idx)
-    print('classnum: ', classnum)
+    # print('classnum: ', classnum)
     target_num = torch.zeros((1, classnum))
     predict_num = torch.zeros((1, classnum))
     acc_num = torch.zeros((1, classnum))
+    # Evaluation index calculation-1-end
 
     with torch.no_grad():
         for valid_inputs, valid_labels in tqdm(validation_dataloaders, ascii=True, desc="Validation:"):
@@ -76,6 +78,7 @@ def eval(model, validation_dataloaders, device):
             # print(numpy.mean(equals.cpu().numpy().astype(int)))
             validation_accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
 
+        # Evaluation index calculation-2-start
             _, predicted = torch.max(valid_output.data, 1)
             total += valid_labels.size(0)
             correct += predicted.eq(valid_labels.data).cpu().sum()
@@ -90,15 +93,24 @@ def eval(model, validation_dataloaders, device):
         F1 = 2 * recall * precision / (recall + precision)
         accuracy = acc_num.sum(1) / target_num.sum(1)
         # 精度调整
-        recall = (recall.numpy()[0] * 100).round(3)
-        precision = (precision.numpy()[0] * 100).round(3)
-        F1 = (F1.numpy()[0] * 100).round(3)
-        accuracy = (accuracy.numpy()[0] * 100).round(3)
+        # recall = (recall.numpy()[0] * 100).round(3)
+        # precision = (precision.numpy()[0] * 100).round(3)
+        # F1 = (F1.numpy()[0] * 100).round(3)
+        # accuracy = (accuracy.numpy()[0] * 100).round(3)
+        recall = ((recall.numpy()[0].mean()) * 100).round(4)
+        precision = ((precision.numpy()[0].mean()) * 100).round(4)
+        F1 = ((F1.numpy()[0].mean()) * 100).round(4)
+        accuracy = (accuracy.numpy()[0] * 100).round(4)
         # 打印格式方便复制
-        print('Recall: ', " ".join('%s' % id for id in recall))
-        print('Precision: ', " ".join('%s' % id for id in precision))
-        print('F1: ', " ".join('%s' % id for id in F1))
-        print('Accuracy: ', accuracy)
+        # print('Valid Recall: ', " ".join('%s' % id for id in recall))
+        # print('Valid Precision: ', " ".join('%s' % id for id in precision))
+        # print('Valid F1: ', " ".join('%s' % id for id in F1))
+        # print('Valid Accuracy: ', accuracy)
+        print('Valid Recall: ', recall)
+        print('Valid Precision: ', precision)
+        print('Valid F1: ', F1)
+        print('Valid Accuracy: ', accuracy)
+        # Evaluation index calculation-2-start
 
     return validation_loss / len(validation_dataloaders), validation_accuracy / len(validation_dataloaders)
 
@@ -124,6 +136,16 @@ def run(model, train_dataloaders, validation_dataloaders=None,
         # print(e)
         train_loss = 0
         train_accuracy = 0
+        
+        # Evaluation index calculation-1-start
+        correct = 0
+        total = 0
+        classnum = len(train_dataloaders.dataset.class_to_idx)
+        # print('classnum: ', classnum)
+        target_num = torch.zeros((1, classnum))
+        predict_num = torch.zeros((1, classnum))
+        acc_num = torch.zeros((1, classnum))
+        # Evaluation index calculation-1-end
 
         # d = {'loss':0.2,'learn':0.8}
         # for i in tqdm(range(50),desc='进行中',ncols=10,postfix=d):
@@ -162,6 +184,40 @@ def run(model, train_dataloaders, validation_dataloaders=None,
 
             # 参数更新
             optimizer.step()
+            
+        # Evaluation index calculation-2-start
+            _, predicted = torch.max(logOutput.data, 1)
+            total += labels.size(0)
+            correct += predicted.eq(labels.data).cpu().sum()
+            pre_mask = torch.zeros(logOutput.size()).scatter_(1, predicted.cpu().view(-1, 1), 1.)
+            predict_num += pre_mask.sum(0)
+            tar_mask = torch.zeros(logOutput.size()).scatter_(1, labels.data.cpu().view(-1, 1), 1.)
+            target_num += tar_mask.sum(0)
+            acc_mask = pre_mask * tar_mask
+            acc_num += acc_mask.sum(0)
+        recall = acc_num / target_num
+        precision = acc_num / predict_num
+        F1 = 2 * recall * precision / (recall + precision)
+        accuracy = acc_num.sum(1) / target_num.sum(1)
+        # 精度调整
+        # recall = (recall.numpy()[0] * 100).round(3)
+        # precision = (precision.numpy()[0] * 100).round(3)
+        # F1 = (F1.numpy()[0] * 100).round(3)
+        # accuracy = (accuracy.numpy()[0] * 100).round(3)
+        recall = ((recall.numpy()[0].mean()) * 100).round(4)
+        precision = ((precision.numpy()[0].mean()) * 100).round(4)
+        F1 = ((F1.numpy()[0].mean()) * 100).round(4)
+        accuracy = (accuracy.numpy()[0] * 100).round(4)
+        # 打印格式方便复制
+        # print('Epoch Recall: ', " ".join('%s' % id for id in recall))
+        # print('Epoch Precision: ', " ".join('%s' % id for id in precision))
+        # print('Epoch F1: ', " ".join('%s' % id for id in F1))
+        # print('Epoch Accuracy: ', accuracy)
+        print('Train-' + str(e) + ' Recall: ', recall)
+        print('Train-' + str(e) + ' Precision: ', precision)
+        print('Train-' + str(e) + ' F1: ', F1)
+        print('Train-' + str(e) + ' Accuracy: ', accuracy)
+        # Evaluation index calculation-2-start
 
         t_loss, t_acc = train_loss / len(train_dataloaders), train_accuracy / len(train_dataloaders)
         print("Epoch Loss {:.3f}, Epoch Accuracy: {:.3f}".format(t_loss, t_acc))
