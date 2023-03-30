@@ -1,6 +1,6 @@
 <div align=center>
 <!--  <img src="./logo.png" width="25%" />  -->
-<img src="logo2.png" width="100%" />
+![]("logo2.png")
 </div>
 
 
