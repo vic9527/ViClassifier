@@ -1,9 +1,8 @@
 <div align=center>
 <!--  <img src="./logo.png" width="25%" />  -->
-![](logo2.png)
 </div>
-![]('logo2.png')
-![RUNOOB 图标](http://static.runoob.com/images/runoob-logo.png)
+
+![](./logo2.png)
 
 **English | [简体中文](README_cn.md)**
 
@@ -74,5 +73,6 @@ Could you treat me a cup of tea？
 
 <div align=left>
 <!--  <img src="./reward-wx.png" width="35%" />  -->
-<img src="./reward-wx.png" width="30%" />
 </div>
+
+![](reward-wx.png)
