@@ -2,7 +2,7 @@
 <!--  <img src="./logo.png" width="25%" />  -->
 </div>
 
-![](./logo2.png)
+![](https://github.com/vic9527/viclassifier/blob/main/logo2.png)
 
 **English | [简体中文](README_cn.md)**
 
@@ -75,4 +75,4 @@ Could you treat me a cup of tea？
 <!--  <img src="./reward-wx.png" width="35%" />  -->
 </div>
 
-![](reward-wx.png)
+![](https://github.com/vic9527/viclassifier/blob/main/reward-wx.png)
